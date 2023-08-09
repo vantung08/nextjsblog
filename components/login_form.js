@@ -1,6 +1,15 @@
 const handleSubmit = async(e) => {
     e.preventDefault();
-    const response = await fetch('/api/authorization.py', {method: 'POST'});
+    const response = await fetch('http://localhost:5000/');
+        // .then(response => response.json())
+        // .then(data => {
+        // // Handle the response data from Flask
+        // console.log(data);
+        // })
+        // .catch(error => {
+        // // Handle any errors
+        // console.error(error);
+        // });
     if (response.ok) {
         console.log('Authorization successful');
     } else {
