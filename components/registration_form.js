@@ -2,13 +2,17 @@ import { useState } from "react";
 
 
 function RegistrationForm() {
+    const[firstName, setFirstName] = useState('')
+    const[lastName, setLastName] = useState('')
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
     const handleSubmit = async(e) => {
         e.preventDefault();
+        const firstName = e.target.firstName.value;
+        const lastName = e.target.lastName.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
-        const user = {email, password};
+        const user = {firstName, lastName, email, password};
         try {
             const response = await fetch('http://localhost:5000/POST/users', {
                 method: 'POST',
@@ -19,7 +23,7 @@ function RegistrationForm() {
             });
             if (response.ok) {
                 const data = await response.json();
-                console.log('User registered successfully: ', data);
+                console.log('User successfully registered: ', data, response.status, response.headers);
             } else {
                 console.log('Registration failed: ', response.statusText);
             }
@@ -29,10 +33,10 @@ function RegistrationForm() {
     };
     return (
         <form onSubmit={handleSubmit}>
-            {/* <label htmlFor="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" required/>
+            <label htmlFor="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} required/>
             <label htmlFor="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" required/><br/> */}
+            <input type="text" id="lastName" name="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required/><br/>
             <label htmlFor="email">Email:</label>
             <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required/><br/>
             <label htmlFor="password">Password:</label>
