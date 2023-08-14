@@ -14,7 +14,7 @@ function RegistrationForm() {
         const password = e.target.password.value;
         const user = {firstName, lastName, email, password};
         try {
-            const response = await fetch('http://localhost:5000/POST/users', {
+            const response = await fetch('http://localhost:5000/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -22,8 +22,10 @@ function RegistrationForm() {
                 body: JSON.stringify(user)
             });
             if (response.ok) {
+                const status = response.status;
+                const headers = response.headers;
                 const data = await response.json();
-                console.log('User successfully registered: ', data, response.status, response.headers);
+                console.log('User successfully registered: ', data, status, headers);
             } else {
                 console.log('Registration failed: ', response.statusText);
             }

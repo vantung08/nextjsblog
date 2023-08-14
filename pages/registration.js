@@ -6,7 +6,7 @@ export default function Registration() {
     return (
         <>
             <Head>
-                <title>Login Page</title>
+                <title>Registration Page</title>
             </Head>
             <section>
                 <RegistrationForm />
