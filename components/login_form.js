@@ -2,8 +2,9 @@ import { useState } from "react";
 
 
 function LoginForm() {
-    const[email, setEmail] = useState('')
-    const[password, setPassword] = useState('')
+    const[email, setEmail] = useState('');
+    const[password, setPassword] = useState('');
+    const [loginStatus, setLoginStatus] = useState(null);
     const handleSubmit = async(e) => {
         e.preventDefault();
         const email = e.target.email.value;
@@ -18,15 +19,23 @@ function LoginForm() {
                 body: JSON.stringify(userLogin)
             });
             if (response.ok) {
-                const status = response.status;
-                const headers = response.headers;
                 const data = await response.json();
-                console.log(data, status, headers);
+                setLoginStatus({success: true, message: data.message});
+                // const status = response.status;
+                // const headers = response.headers;
+                // const data = await response.json();
+                // console.log(data, status, headers);
             } else {
-                console.log('Login failed: ', response.statusText);
+                const errorData = await response.json();
+                setLoginStatus({success: false, message: errorData.message});
+                // console.log('Login failed: ', response.statusText);
             }
         } catch(error) {
             console.log('Error occurred during registration: ', error);
+            setLoginStatus({
+                success: false,
+                message: 'An error occurred during login. Please try again later.'
+            });
         }
     };
     return (
@@ -38,9 +47,19 @@ function LoginForm() {
             {/* <label htmlFor="confirmPassword">Confirm Password:</label>
             <input type="password" id="confirmPassword" name="confirmPassword" required/><br/> */}
             <button type="submit">Login</button>
+
+            {loginStatus && (
+                <div>
+                    {loginStatus.success ? (
+                        <p>Login successfully: {loginStatus.message}</p>
+                    ) : (
+                        <p> Login failed: {loginStatus.message}</p>
+                    )}
+                </div>
+            )}
         </form>
     );
 };
 
 
-export default LoginForm
+export default LoginForm;
